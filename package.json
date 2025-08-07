@@ -1,6 +1,6 @@
 {
-  "name": "mcp-server-confluence",
-  "version": "1.0.0",
+  "name": "@readyjune/mcp-server-confluence",
+  "version": "1.0.1",
   "description": "MCP server for reading Atlassian Confluence pages",
   "main": "index.js",
   "scripts": {
