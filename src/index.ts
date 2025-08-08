@@ -6,10 +6,7 @@ import {
   Tool,
 } from "@modelcontextprotocol/sdk/types.js";
 import axios, { AxiosInstance } from "axios";
-import * as dotenv from "dotenv";
-
-// Load environment variables
-dotenv.config();
+// Environment variables are provided by Amazon Q MCP configuration
 
 // Confluence API configuration
 const CONFLUENCE_BASE_URL = process.env.CONFLUENCE_BASE_URL;
@@ -77,8 +74,9 @@ const TOOLS: Tool[] = [
         },
         limit: {
           type: "number",
-          description: "Maximum number of results to return (default: 10)",
-          default: 10,
+          description: "Maximum number of results to return (default: 50, max: 100)",
+          default: 50,
+          maximum: 100,
         },
       },
       required: ["query"],
@@ -96,8 +94,9 @@ const TOOLS: Tool[] = [
         },
         limit: {
           type: "number",
-          description: "Maximum number of pages to return (default: 25)",
-          default: 25,
+          description: "Maximum number of pages to return (default: 50, max: 100)",
+          default: 50,
+          maximum: 100,
         },
       },
       required: ["spaceKey"],
@@ -115,8 +114,9 @@ const TOOLS: Tool[] = [
         },
         limit: {
           type: "number",
-          description: "Maximum number of child pages to return (default: 25)",
-          default: 25,
+          description: "Maximum number of child pages to return (default: 50, max: 100)",
+          default: 50,
+          maximum: 100,
         },
       },
       required: ["pageId"],
@@ -230,7 +230,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       case "confluence_search": {
         const query = args.query as string;
-        const limit = (args.limit as number) || 10;
+        const limit = (args.limit as number) || 50; // Updated default
         
         const response = await confluenceApi.get("/content/search", {
           params: {
@@ -263,7 +263,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       case "confluence_get_space_pages": {
         const spaceKey = args.spaceKey as string;
-        const limit = (args.limit as number) || 25;
+        const limit = (args.limit as number) || 50; // Updated default
         
         const response = await confluenceApi.get("/content", {
           params: {
@@ -298,7 +298,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       case "confluence_get_child_pages": {
         const pageId = args.pageId as string;
-        const limit = (args.limit as number) || 25;
+        const limit = (args.limit as number) || 50; // Updated default
         
         const response = await confluenceApi.get(`/content/${pageId}/child/page`, {
           params: {

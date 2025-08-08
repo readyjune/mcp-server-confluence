@@ -1,8 +1,11 @@
 {
-  "name": "@readyjune/mcp-server-confluence",
-  "version": "1.0.1",
+  "name": "@jinwookim_kr/mcp-server-confluence",
+  "version": "1.0.3",
   "description": "MCP server for reading Atlassian Confluence pages",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-server-confluence": "./dist/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
