@@ -78,8 +78,8 @@ const TOOLS = [
                 },
                 limit: {
                     type: "number",
-                    description: "Maximum number of results to return (default: 50)",
-                    default: 50,
+                    description: "Maximum number of results to return (default: 1000)",
+                    default: 1000,
                 },
             },
             required: ["query"],
@@ -97,8 +97,8 @@ const TOOLS = [
                 },
                 limit: {
                     type: "number",
-                    description: "Maximum number of pages to return (default: 50)",
-                    default: 50,
+                    description: "Maximum number of pages to return (default: 1000)",
+                    default: 1000,
                 },
             },
             required: ["spaceKey"],
@@ -116,8 +116,8 @@ const TOOLS = [
                 },
                 limit: {
                     type: "number",
-                    description: "Maximum number of child pages to return (default: 50)",
-                    default: 50,
+                    description: "Maximum number of child pages to return (default: 1000)",
+                    default: 1000,
                 },
             },
             required: ["pageId"],
@@ -131,8 +131,8 @@ const TOOLS = [
             properties: {
                 limit: {
                     type: "number",
-                    description: "Maximum number of spaces to return (default: 50)",
-                    default: 50,
+                    description: "Maximum number of spaces to return (default: 1000)",
+                    default: 1000,
                 },
             },
         },
@@ -226,7 +226,7 @@ server.setRequestHandler(types_js_1.CallToolRequestSchema, async (request) => {
             }
             case "confluence_search": {
                 const query = args.query;
-                const limit = args.limit || 50;
+                const limit = args.limit || 1000;
                 const response = await confluenceApi.get("/content/search", {
                     params: {
                         cql: query,
@@ -254,7 +254,7 @@ server.setRequestHandler(types_js_1.CallToolRequestSchema, async (request) => {
             }
             case "confluence_get_space_pages": {
                 const spaceKey = args.spaceKey;
-                const limit = args.limit || 50;
+                const limit = args.limit || 1000;
                 const response = await confluenceApi.get("/content", {
                     params: {
                         spaceKey,
@@ -285,7 +285,7 @@ server.setRequestHandler(types_js_1.CallToolRequestSchema, async (request) => {
             }
             case "confluence_get_child_pages": {
                 const pageId = args.pageId;
-                const limit = args.limit || 50;
+                const limit = args.limit || 1000;
                 const response = await confluenceApi.get(`/content/${pageId}/child/page`, {
                     params: {
                         limit,
@@ -313,7 +313,7 @@ server.setRequestHandler(types_js_1.CallToolRequestSchema, async (request) => {
                 };
             }
             case "confluence_list_spaces": {
-                const limit = args.limit || 50;
+                const limit = args.limit || 1000;
                 const response = await confluenceApi.get("/space", {
                     params: {
                         limit,

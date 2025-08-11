@@ -83,8 +83,8 @@ const TOOLS: Tool[] = [
         },
         limit: {
           type: "number",
-          description: "Maximum number of results to return (default: 50)",
-          default: 50,
+          description: "Maximum number of results to return (default: 1000)",
+          default: 1000,
         },
       },
       required: ["query"],
@@ -102,8 +102,8 @@ const TOOLS: Tool[] = [
         },
         limit: {
           type: "number",
-          description: "Maximum number of pages to return (default: 50)",
-          default: 50,
+          description: "Maximum number of pages to return (default: 1000)",
+          default: 1000,
         },
       },
       required: ["spaceKey"],
@@ -121,8 +121,8 @@ const TOOLS: Tool[] = [
         },
         limit: {
           type: "number",
-          description: "Maximum number of child pages to return (default: 50)",
-          default: 50,
+          description: "Maximum number of child pages to return (default: 1000)",
+          default: 1000,
         },
       },
       required: ["pageId"],
@@ -136,8 +136,8 @@ const TOOLS: Tool[] = [
       properties: {
         limit: {
           type: "number",
-          description: "Maximum number of spaces to return (default: 50)",
-          default: 50,
+          description: "Maximum number of spaces to return (default: 1000)",
+          default: 1000,
         },
       },
     },
@@ -250,7 +250,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       case "confluence_search": {
         const query = args.query as string;
-        const limit = (args.limit as number) || 50;
+        const limit = (args.limit as number) || 1000;
         
         const response = await confluenceApi.get("/content/search", {
           params: {
@@ -282,7 +282,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       case "confluence_get_space_pages": {
         const spaceKey = args.spaceKey as string;
-        const limit = (args.limit as number) || 50;
+        const limit = (args.limit as number) || 1000;
         
         const response = await confluenceApi.get("/content", {
           params: {
@@ -317,7 +317,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       case "confluence_get_child_pages": {
         const pageId = args.pageId as string;
-        const limit = (args.limit as number) || 50;
+        const limit = (args.limit as number) || 1000;
         
         const response = await confluenceApi.get(`/content/${pageId}/child/page`, {
           params: {
@@ -349,7 +349,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
       
       case "confluence_list_spaces": {
-        const limit = (args.limit as number) || 50;
+        const limit = (args.limit as number) || 1000;
         
         const response = await confluenceApi.get("/space", {
           params: {

@@ -27,8 +27,7 @@
         "CONFLUENCE_API_TOKEN": "your-api-token-here"
       },
       "timeout": 60000,
-      "disabled": false,
-      "cwd": "/path/to/your/mcp-server-confluence"
+      "disabled": false
     }
   },
   "tools": [
@@ -39,20 +38,14 @@
     "fileSearch",
     "executeBash",
     "codeReview",
-    "displayFindings",
-    "@curtin-confluence/confluence_search",
-    "@curtin-confluence/confluence_get_space_pages",
-    "@curtin-confluence/confluence_get_child_pages"
+    "displayFindings"
   ],
   "allowedTools": [
     "fsRead",
     "listDirectory",
     "fileSearch",
     "codeReview",
-    "displayFindings",
-    "@curtin-confluence/confluence_search",
-    "@curtin-confluence/confluence_get_space_pages",
-    "@curtin-confluence/confluence_get_child_pages"
+    "displayFindings"
   ],
   "toolsSettings": {
     "execute_bash": {
