@@ -83,8 +83,8 @@ const TOOLS: Tool[] = [
         },
         limit: {
           type: "number",
-          description: "Maximum number of results to return (default: 10)",
-          default: 10,
+          description: "Maximum number of results to return (default: 50)",
+          default: 50,
         },
       },
       required: ["query"],
@@ -102,8 +102,8 @@ const TOOLS: Tool[] = [
         },
         limit: {
           type: "number",
-          description: "Maximum number of pages to return (default: 25)",
-          default: 25,
+          description: "Maximum number of pages to return (default: 50)",
+          default: 50,
         },
       },
       required: ["spaceKey"],
@@ -121,11 +121,25 @@ const TOOLS: Tool[] = [
         },
         limit: {
           type: "number",
-          description: "Maximum number of child pages to return (default: 25)",
-          default: 25,
+          description: "Maximum number of child pages to return (default: 50)",
+          default: 50,
         },
       },
       required: ["pageId"],
+    },
+  },
+  {
+    name: "confluence_list_spaces",
+    description: "List all Confluence spaces you have access to",
+    inputSchema: {
+      type: "object",
+      properties: {
+        limit: {
+          type: "number",
+          description: "Maximum number of spaces to return (default: 50)",
+          default: 50,
+        },
+      },
     },
   },
 ];
@@ -236,7 +250,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       case "confluence_search": {
         const query = args.query as string;
-        const limit = (args.limit as number) || 10;
+        const limit = (args.limit as number) || 50;
         
         const response = await confluenceApi.get("/content/search", {
           params: {
@@ -268,7 +282,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       case "confluence_get_space_pages": {
         const spaceKey = args.spaceKey as string;
-        const limit = (args.limit as number) || 25;
+        const limit = (args.limit as number) || 50;
         
         const response = await confluenceApi.get("/content", {
           params: {
@@ -303,7 +317,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       case "confluence_get_child_pages": {
         const pageId = args.pageId as string;
-        const limit = (args.limit as number) || 25;
+        const limit = (args.limit as number) || 50;
         
         const response = await confluenceApi.get(`/content/${pageId}/child/page`, {
           params: {
@@ -328,6 +342,39 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 parentPageId: pageId,
                 totalChildren: response.data.size,
                 children: childPages,
+              }, null, 2),
+            },
+          ],
+        };
+      }
+      
+      case "confluence_list_spaces": {
+        const limit = (args.limit as number) || 50;
+        
+        const response = await confluenceApi.get("/space", {
+          params: {
+            limit,
+            expand: "description.plain,homepage",
+          },
+        });
+        
+        const spaces = response.data.results.map((space: any) => ({
+          id: space.id,
+          key: space.key,
+          name: space.name,
+          type: space.type,
+          description: space.description?.plain?.value || "",
+          webUrl: `${CONFLUENCE_BASE_URL}/spaces/${space.key}`,
+          homepageId: space.homepage?.id,
+        }));
+        
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify({
+                totalSpaces: response.data.size,
+                spaces,
               }, null, 2),
             },
           ],

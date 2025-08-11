@@ -15,6 +15,20 @@
         "CONFLUENCE_API_TOKEN": "your-api-token-here"
       },
       "disabled": true
+    },
+    "curtin-confluence": {
+      "command": "node",
+      "args": [
+        "dist/index.js"
+      ],
+      "env": {
+        "CONFLUENCE_BASE_URL": "https://your-domain.atlassian.net/wiki",
+        "CONFLUENCE_EMAIL": "your-email@example.com",
+        "CONFLUENCE_API_TOKEN": "your-api-token-here"
+      },
+      "timeout": 60000,
+      "disabled": false,
+      "cwd": "/path/to/your/mcp-server-confluence"
     }
   },
   "tools": [
@@ -25,14 +39,20 @@
     "fileSearch",
     "executeBash",
     "codeReview",
-    "displayFindings"
+    "displayFindings",
+    "@curtin-confluence/confluence_search",
+    "@curtin-confluence/confluence_get_space_pages",
+    "@curtin-confluence/confluence_get_child_pages"
   ],
   "allowedTools": [
     "fsRead",
     "listDirectory",
     "fileSearch",
     "codeReview",
-    "displayFindings"
+    "displayFindings",
+    "@curtin-confluence/confluence_search",
+    "@curtin-confluence/confluence_get_space_pages",
+    "@curtin-confluence/confluence_get_child_pages"
   ],
   "toolsSettings": {
     "execute_bash": {
